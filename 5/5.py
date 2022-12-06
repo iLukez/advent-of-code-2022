@@ -34,6 +34,7 @@ for line in instructionLines:
     for i in range(nCrates):
         stacks1[indexTo].append(stacks1[indexFrom].pop())
 
+print("1: ", end="")
 for stack in stacks1:
     stack.reverse()
     print(stack[0], end="")
@@ -51,6 +52,7 @@ for line in instructionLines:
     buffer = buffer[::-1]
     stacks2[indexTo].extend(buffer)
 
+print("2: ", end="")
 for stack in stacks2:
         stack.reverse()
         print(stack[0], end="")
