@@ -20,7 +20,7 @@ def part1(data):
     visited_pos = set()
     pos_t = [0, 0]
     pos_h = [0, 0]
-    for index, move in enumerate(moves):
+    for move in moves:
         for i in range(0, int(move[1])):
             prev_pos_h = pos_h.copy()
             if move[0] == 'U':
@@ -43,7 +43,7 @@ def part2(data):
     visited_pos = set()
     pos = [[0, 0] for i in range(0, 10)]
     prev_pos = [[0, 0] for i in range(0, 10)]
-    for index, move in enumerate(moves):
+    for move in moves:
         for i in range(0, int(move[1])):
             prev_pos[0] = pos[0].copy()
             if move[0] == 'U':
