@@ -25,26 +25,6 @@ def move_diagonally(pos_move, pos_reach):
         pos_move[0] += 1
         pos_move[1] -= 1
 
-def showGraphic(pos):
-    grid = [[] for i in range(0, 30)]
-    for i in reversed(range(0, 30)):
-        grid[i] = ""
-        buffer = []
-        for j in reversed(range(0, 30)):
-            buffer.append(".")
-        grid[i] = buffer
-    
-    for i, knot in enumerate(pos):
-        grid[knot[0] + 16][knot[1] + 16] = f"{i}"
-        if i == 0:
-            grid[knot[0] + 16][knot[1] + 16] = "H"
-    
-    grid[16][16] = "s"
-    for line in reversed((grid)):
-        for char in reversed(line):
-            print(char, end=" ")
-        print()
-
 def part1(data):
     moves = [tuple(line.split(" ")) for line in data.split("\n")]
     visited_pos = set()
@@ -73,7 +53,7 @@ def part2(data):
     visited_pos = set()
     pos = [[0, 0] for i in range(0, 10)]
     prev_pos = [[0, 0] for i in range(0, 10)]
-    for index, move in enumerate(moves):
+    for move in moves:
         for i in range(0, int(move[1])):
             prev_pos[0] = pos[0].copy()
             if move[0] == 'U':
@@ -90,12 +70,7 @@ def part2(data):
                     move_linear(pos[j], pos[j - 1])
                 elif findDistance(pos[j - 1], pos[j]) >= 2:
                     move_diagonally(pos[j], pos[j - 1]) 
-            if index is 2: 
-                showGraphic(pos)
-                print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
             visited_pos.add(tuple(pos[9]))
-       
-        
     return len(visited_pos)
 
 with open("input.txt") as f:
