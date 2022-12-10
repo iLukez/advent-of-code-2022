@@ -1,19 +1,49 @@
 def findDistance(pos_h, pos_t):
-    return max(abs(pos_h[0] - pos_t[0]), abs(pos_h[1] - pos_t[1]))
+    return abs(max(abs(pos_h[0] - pos_t[0]), abs(pos_h[1] - pos_t[1])))
 
+def move_linear(pos_move, pos_reach):
+    if pos_reach[0] > pos_move[0]:
+        pos_move[0] += 1
+    elif pos_reach[0] < pos_move[0]:
+        pos_move[0] -= 1
+    elif pos_reach[1] > pos_move[1]:
+        pos_move[1] += 1
+    else:
+        pos_move[1] -= 1
+    
 def move_diagonally(pos_move, pos_reach):
     if pos_reach[0] > pos_move[0] and pos_reach[1] > pos_move[1]:
         pos_move[0] += 1
         pos_move[1] += 1
-    if pos_reach[0] < pos_move[0] and pos_reach[1] > pos_move[1]:
+    elif pos_reach[0] < pos_move[0] and pos_reach[1] > pos_move[1]:
         pos_move[0] -= 1
         pos_move[1] += 1
-    if pos_reach[0] < pos_move[0] and pos_reach[1] < pos_move[1]:
+    elif pos_reach[0] < pos_move[0] and pos_reach[1] < pos_move[1]:
         pos_move[0] -= 1
         pos_move[1] -= 1
-    if pos_reach[0] > pos_move[0] and pos_reach[1] < pos_move[1]:
+    elif pos_reach[0] > pos_move[0] and pos_reach[1] < pos_move[1]:
         pos_move[0] += 1
         pos_move[1] -= 1
+
+def showGraphic(pos):
+    grid = [[] for i in range(0, 30)]
+    for i in reversed(range(0, 30)):
+        grid[i] = ""
+        buffer = []
+        for j in reversed(range(0, 30)):
+            buffer.append(".")
+        grid[i] = buffer
+    
+    for i, knot in enumerate(pos):
+        grid[knot[0] + 16][knot[1] + 16] = f"{i}"
+        if i == 0:
+            grid[knot[0] + 16][knot[1] + 16] = "H"
+    
+    grid[16][16] = "s"
+    for line in reversed((grid)):
+        for char in reversed(line):
+            print(char, end=" ")
+        print()
 
 def part1(data):
     moves = [tuple(line.split(" ")) for line in data.split("\n")]
@@ -43,7 +73,7 @@ def part2(data):
     visited_pos = set()
     pos = [[0, 0] for i in range(0, 10)]
     prev_pos = [[0, 0] for i in range(0, 10)]
-    for move in moves:
+    for index, move in enumerate(moves):
         for i in range(0, int(move[1])):
             prev_pos[0] = pos[0].copy()
             if move[0] == 'U':
@@ -57,10 +87,15 @@ def part2(data):
             for j in range(1, len(pos)):
                 prev_pos[j] = pos[j].copy()
                 if findDistance(pos[j - 1], pos[j]) >= 2 and (pos[j-1][0] == pos[j][0] or pos[j-1][1] == pos[j][1]):
-                    pos[j] = prev_pos[j-1]
+                    move_linear(pos[j], pos[j - 1])
                 elif findDistance(pos[j - 1], pos[j]) >= 2:
                     move_diagonally(pos[j], pos[j - 1]) 
+            if index is 2: 
+                showGraphic(pos)
+                print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
             visited_pos.add(tuple(pos[9]))
+       
+        
     return len(visited_pos)
 
 with open("input.txt") as f:
